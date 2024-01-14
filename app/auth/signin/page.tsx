@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
+import useFormFunction, { FormData } from "@/app/helper/globle_helper";
+
 export const metadata: Metadata = {
   title: "Signin Page | Next.js E-commerce Dashboard Template",
   description: "This is Signin page for TailAdmin Next.js",
@@ -10,6 +12,21 @@ export const metadata: Metadata = {
 };
 
 const SignIn: React.FC = () => {
+  const { formData, formFunction } = useFormFunction();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    formFunction({ type1: "input", type2: "string", name, value });
+  };
+
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
+    // You can perform additional actions before making the API call if needed
+
+    // Example API call
+    formFunction({ type1: "apiCall", endpoint: "/your-api-endpoint" });
+  };
+
   return (
     <>
       <Breadcrumb pageName="Sign In" />
@@ -172,7 +189,7 @@ const SignIn: React.FC = () => {
                 Sign In to TailAdmin
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -180,7 +197,10 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="email"
+                      name="email"
                       placeholder="Enter your email"
+                      value={formData.email || ""}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
@@ -211,7 +231,10 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="password"
+                      name="password"
                       placeholder="6+ Characters, 1 Capital letter"
+                      value={formData.password || ""}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
 
