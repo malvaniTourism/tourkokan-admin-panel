@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,7 +25,7 @@ const SignIn: React.FC = () => {
     // You can perform additional actions before making the API call if needed
 
     // Example API call
-    formFunction({ type1: "apiCall", endpoint: "/your-api-endpoint" });
+    formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/auth/login" });
   };
 
   return (
