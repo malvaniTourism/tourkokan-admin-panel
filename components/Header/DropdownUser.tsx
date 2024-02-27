@@ -40,7 +40,7 @@ const DropdownUser = () => {
     // You can perform additional actions before making the API call if needed
 
     // Example API call
-    useFormFunction({ type1: "apiCall", endpoint: "/api/admin/v2/auth/logout" });
+    // useFormFunction({ type1: "apiCall", endpoint: "/api/admin/v2/auth/logout" });
     localStorage.removeItem('token');
     location.reload();
   };
