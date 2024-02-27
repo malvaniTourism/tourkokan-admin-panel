@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 export interface FormData {
   [key: string]: string | number;
@@ -15,8 +16,17 @@ interface FormFunctionProps {
 
 const useFormFunction = () => {
   const [formData, setFormData] = useState<FormData>({});
+  const router = useRouter();
+
+//type1=apiCall/input
+//type2=number/string
+//name=e.target.name
+//value=e.target.value
+//endpoint
+//token(for api call)
 
   const formFunction = ({ type1, type2, name, value, endpoint, token  }: FormFunctionProps): void => {
+    
     if (type1 === "input") {
       if (type2 === "string" || type2 === "number") {
         setFormData((prevFormData: FormData) => ({
@@ -53,12 +63,17 @@ const useFormFunction = () => {
       };
 
       const response = await fetch(endpoint, options);
-      if (!response.ok) {
+      const result = await response.json();
+      if (!response.ok||!result.success) {
+        window.alert(`API request failed ${result.message}`)
         throw new Error(`API request failed with status ${response.status}`);
       }
 
-      const result = await response.json();
       console.log("API call successful:", result);
+      if(result.success && result?.data?.access_token){
+        localStorage.setItem('token',result?.data?.access_token)
+        location.reload();
+      }
     } catch (error) {
       console.error("API call failed:", error);
     }

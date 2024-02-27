@@ -7,6 +7,8 @@ import Loader from "@/components/common/Loader";
 
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute';
+import SignIn from "./auth/signin/page";
 
 export default function RootLayout({
   children,
@@ -16,7 +18,8 @@ export default function RootLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [loading, setLoading] = useState<boolean>(true);
-
+  const isAuthenticated = localStorage.getItem('token');
+console.log('++++ hello jii',children)
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
@@ -28,33 +31,45 @@ export default function RootLayout({
           {loading ? (
             <Loader />
           ) : (
-            <div className="flex h-screen overflow-hidden">
-              {/* <!-- ===== Sidebar Start ===== --> */}
-              <Sidebar
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-              />
-              {/* <!-- ===== Sidebar End ===== --> */}
+            <>
+              {isAuthenticated ?
+                <ProtectedRoute>
 
-              {/* <!-- ===== Content Area Start ===== --> */}
-              <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-                {/* <!-- ===== Header Start ===== --> */}
-                <Header
-                  sidebarOpen={sidebarOpen}
-                  setSidebarOpen={setSidebarOpen}
-                />
-                {/* <!-- ===== Header End ===== --> */}
+                  <div className="flex h-screen overflow-hidden">
+                    {/* <!-- ===== Sidebar Start ===== --> */}
+                    <Sidebar
+                      sidebarOpen={sidebarOpen}
+                      setSidebarOpen={setSidebarOpen}
+                    />
+                    {/* <!-- ===== Sidebar End ===== --> */}
 
-                {/* <!-- ===== Main Content Start ===== --> */}
-                <main>
-                  <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                    {children}
+                    {/* <!-- ===== Content Area Start ===== --> */}
+                    <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                      {/* <!-- ===== Header Start ===== --> */}
+                      <Header
+                        sidebarOpen={sidebarOpen}
+                        setSidebarOpen={setSidebarOpen}
+                      />
+                      {/* <!-- ===== Header End ===== --> */}
+
+                      {/* <!-- ===== Main Content Start ===== --> */}
+                      <main>
+                        <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                          {children}
+                        </div>
+                      </main>
+                      {/* <!-- ===== Main Content End ===== --> */}
+                    </div>
+                    {/* <!-- ===== Content Area End ===== --> */}
                   </div>
-                </main>
-                {/* <!-- ===== Main Content End ===== --> */}
-              </div>
-              {/* <!-- ===== Content Area End ===== --> */}
-            </div>
+                </ProtectedRoute>
+            :
+            (
+              <SignIn/>
+            )  
+            }
+            </>
+
           )}
         </div>
       </body>
