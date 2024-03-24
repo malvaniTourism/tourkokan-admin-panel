@@ -25,7 +25,7 @@ const SignIn: React.FC = () => {
     // You can perform additional actions before making the API call if needed
 
     // Example API call
-    formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/auth/login" });
+    formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/auth/login", method: 'POST' });
   };
 
   return (

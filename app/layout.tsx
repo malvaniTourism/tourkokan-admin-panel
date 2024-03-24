@@ -16,10 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const [loading, setLoading] = useState<boolean>(true);
-  const isAuthenticated = localStorage.getItem('token');
-console.log('++++ hello jii',children)
+
+  // Use a function to get the token, so it's only executed on the client side
+  const isAuthenticated = () => typeof window !== 'undefined' && localStorage.getItem('token');
+
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
@@ -32,7 +33,7 @@ console.log('++++ hello jii',children)
             <Loader />
           ) : (
             <>
-              {isAuthenticated ?
+              {isAuthenticated() ?
                 <ProtectedRoute>
 
                   <div className="flex h-screen overflow-hidden">

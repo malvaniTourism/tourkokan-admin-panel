@@ -1,5 +1,8 @@
+"use client"
 import { BRAND } from "@/types/brand";
 import Image from "next/image";
+import useFormFunction, { FormData } from "@/app/helper/globle_helper";
+import { useEffect } from "react";
 
 const brandData: BRAND[] = [
   {
@@ -45,10 +48,37 @@ const brandData: BRAND[] = [
 ];
 
 const TableOne = () => {
+  const token =localStorage.getItem('token');
+
+  const { formData, formFunction } = useFormFunction();
+
+  formData['']
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    
+    formFunction({ type1: "input", type2: "string", name, value });
+  };
+
+  let payload={
+    apitype:'dropdown',
+    category:'city'
+  }
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
+    // You can perform additional actions before making the API call if needed
+
+    // Example API call
+    formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/sites",  token:`${token}` , method: 'POST',payload:payload });
+  };
+
+  useEffect(()=>{
+    console.log('+++ jai shree ram',formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/sites", method: 'POST' ,payload:payload}))
+  },[])
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-        Top Channels
+        All Routes
       </h4>
 
       <div className="flex flex-col">
@@ -58,7 +88,7 @@ const TableOne = () => {
               Source
             </h5>
           </div>
-          <div className="p-2.5 text-center xl:p-5">
+          {/* <div className="p-2.5 text-center xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
               Visitors
             </h5>
@@ -77,16 +107,15 @@ const TableOne = () => {
             <h5 className="text-sm font-medium uppercase xsm:text-base">
               Conversion
             </h5>
-          </div>
+          </div> */}
         </div>
 
         {brandData.map((brand, key) => (
           <div
-            className={`grid grid-cols-3 sm:grid-cols-5 ${
-              key === brandData.length - 1
+            className={`grid grid-cols-3 sm:grid-cols-5 ${key === brandData.length - 1
                 ? ""
                 : "border-b border-stroke dark:border-strokedark"
-            }`}
+              }`}
             key={key}
           >
             <div className="flex items-center gap-3 p-2.5 xl:p-5">
