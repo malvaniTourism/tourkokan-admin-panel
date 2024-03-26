@@ -2,7 +2,7 @@
 import { BRAND } from "@/types/brand";
 import Image from "next/image";
 import useFormFunction, { FormData } from "@/app/helper/globle_helper";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const brandData: BRAND[] = [
   {
@@ -49,30 +49,17 @@ const brandData: BRAND[] = [
 
 const TableOne = () => {
   const token =localStorage.getItem('token');
-
+const [siteList,setSiteList]=useState([]);
   const { formData, formFunction } = useFormFunction();
-
-  formData['']
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    
-    formFunction({ type1: "input", type2: "string", name, value });
-  };
 
   let payload={
     apitype:'dropdown',
     category:'city'
   }
-  const handleSubmit = (e: React.FormEvent): void => {
-    e.preventDefault();
-    // You can perform additional actions before making the API call if needed
-
-    // Example API call
-    formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/sites",  token:`${token}` , method: 'POST',payload:payload });
-  };
 
   useEffect(()=>{
-    console.log('+++ jai shree ram',formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/sites", method: 'POST' ,payload:payload}))
+    let temp=formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/sites",  token:`${token}` , method: 'POST',payload:payload });
+    console.log('+++++',temp,formFunction({ type1: "apiCall", endpoint: "/api/admin/v2/sites",  token:`${token}` , method: 'POST',payload:payload }))
   },[])
 
   return (

@@ -37,13 +37,15 @@ const useFormFunction = () => {
         }));
       }
     }
-    
-    
-    
-    console.log('++++ jai hind', type1,endpoint ,'&&', method)
+
+
+
     if (type1 === "apiCall" && endpoint && method) {
-      
-      makeApiCall(endpoint, method, endpoint == '/api/admin/v2/sites' ? payload : formData, token);
+
+      let temp=makeApiCall(endpoint, method, endpoint == '/api/admin/v2/sites' ? payload : formData, token);
+      console.log('*****',temp);
+      return temp;
+
     }
   };
 
@@ -79,13 +81,13 @@ const useFormFunction = () => {
         window.alert(`API request failed ${result.message}`);
         throw new Error(`API request failed with status ${response.status}`);
       }
-
-      console.log("API call successful:", result);
-
       if (result.success && result?.data?.access_token) {
         localStorage.setItem('token', result?.data?.access_token);
         location.reload();
       }
+
+      console.log("API call successful:", result);
+      return result;
     } catch (error) {
       console.log("API call failed:", error);
     }
