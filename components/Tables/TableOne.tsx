@@ -4,18 +4,24 @@ import { BRAND } from "@/types/brand";
 import Image from "next/image";
 import useFormFunction from "@/app/helper/globle_helper";
 
+// Define the type of the site object
+interface Site {
+  name: string;
+  mr_name?: string; // Make mr_name property optional
+}
+
 const brandData: BRAND[] = [
   // Your brand data here...
 ];
 
 const TableOne = () => {
   const token = localStorage.getItem('token');
-  const [siteList, setSiteList] = useState([]);
+  const [siteList, setSiteList] = useState<Site[]>([]); // Set the type of siteList to an array of Site objects
 
   const { formData, formFunction } = useFormFunction();
 
   let payload = {
-    apitype: 'dropdown',
+    apitype: 'list',
     category: 'city'
   };
 
@@ -48,9 +54,8 @@ const TableOne = () => {
           <div className="grid grid-cols-6 sm:grid-cols-5" key={index}>
             <div className="flex items-center gap-3 p-2.5 xl:p-5">
               <p className="hidden text-black dark:text-white sm:block">
-                {site?.name} <br/> ({site.mr_name})
+                {site?.name} <br/>
               </p>
-              
             </div>
           </div>
         ))}
